@@ -3,62 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSphere — Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="assets/icon.png" type="image/x-icon">
+:root {
+  --bg: #0a090f;
+  --bg-2: #110f1a;
+  --bg-card: #16131f;
+  --border: rgba(138, 92, 255, 0.15);
+  --purple: #8a5cff;
+  --purple-bright: #a97cff;
+  --purple-dim: rgba(138, 92, 255, 0.12);
+  --purple-glow: rgba(138, 92, 255, 0.35);
+  --text: #f0ecff;
+  --text-muted: #7a738f;
+  --text-dim: #4a4560;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    <title>SkillSphere</title>
+html { scroll-behavior: smooth; }
 
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 40px;
+  height: 68px;
+  background: rgba(10, 9, 15, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--purple-bright), #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo img { display: none; }
+
+.search-bar {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 44px 10px 18px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-bar input::placeholder { color: var(--text-dim); }
+
+.search-bar input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px var(--purple-dim);
+}
+
+.search-bar img {
+  position: absolute;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+}
+
+.search-bar::after {
+  content: '⌕';
+  position: absolute;
+  right: 14px;
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-button button, .register-button button {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.login-button button {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.login-button button:hover {
+  color: var(--text);
+  border-color: rgba(138, 92, 255, 0.4);
+  background: var(--purple-dim);
+}
+
+.register-button button {
+  background: var(--purple);
+  color: #fff;
+  box-shadow: 0 0 20px var(--purple-glow);
+}
+
+.register-button button:hover {
+  background: var(--purple-bright);
+  box-shadow: 0 0 30px var(--purple-glow);
+  transform: translateY(-1px);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 100px 40px 30px;
+  text-align: center;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(138, 92, 255, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple-dim);
+  border: 1px solid rgba(138, 92, 255, 0.25);
+  border-radius: 50px;
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  color: var(--purple-bright);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.6s both;
+}
+
+.badge::before { content: '✦'; font-size: 0.7rem; }
+
+#title {
+  display: block;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: var(--text);
+  animation: fadeUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+#title:nth-of-type(2) {
+  animation-delay: 0.1s;
+  background: linear-gradient(135deg, var(--purple-bright) 20%, #c084fc 60%, #f0abfc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#subtitle {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-btn {
+  display: inline-block;
+  margin-top: 36px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 1.5px;
+  padding: 15px 40px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 0 30px var(--purple-glow), 0 4px 20px rgba(0,0,0,0.4);
+  animation: fadeUp 0.7s ease 0.3s both;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.hero-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 50px var(--purple-glow), 0 8px 30px rgba(0,0,0,0.5);
+}
+
+.hero-btn:hover::before { opacity: 1; }
+
+/* CONTENT */
+.content-section {
+  max-width: 860px;
+  margin: 60px auto 0;
+  padding: 0 40px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.content-block {
+  padding: 32px 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  animation: fadeUp 0.7s ease 0.4s both;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.content-block:hover {
+  border-color: rgba(138, 92, 255, 0.3);
+  box-shadow: 0 0 30px rgba(138, 92, 255, 0.06);
+}
+
+.content-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--purple), transparent);
+  border-radius: 3px 0 0 3px;
+}
+
+/* STATS ROW */
+.stats-row {
+  display: flex;
+  gap: 16px;
+  animation: fadeUp 0.7s ease 0.5s both;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 24px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.stat-card:hover {
+  border-color: rgba(138, 92, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(138, 92, 255, 0.1);
+}
+
+.stat-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  background: linear-gradient(135deg, var(--purple-bright), #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+/* FOOTER */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-2);
+}
+
+footer a {
+  color: var(--purple-bright);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+footer a:hover { color: #fff; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(138, 92, 255, 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  header { padding: 0 20px; }
+  .search-bar { display: none; }
+  .login-button { display: none; }
+  .hero, .content-section { padding-left: 20px; padding-right: 20px; }
+  .stats-row { flex-direction: column; }
+  #title { letter-spacing: -1px; }
+}
+    </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <a href="index.html"><img src="assets/logo.png" alt="Logo"></a>
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Digite sua busca aqui...">
-            <img src="assets/search.png" alt="Lupa">
-        </div>
-        <div class="header-buttons">
-            <div class="login-button">
-                <button>Fazer login</button>
-            </div>
-            <div class="register-button">
-                <button>Registrar-se</button>
-            </div>
-        </div>
-    </header>
+<header>
+  <div class="logo">
+    <a href="#">SkillSphere</a>
+  </div>
+  <div class="search-bar">
+    <input type="text" placeholder="Digite sua busca aqui...">
+    <img src="" alt="">
+  </div>
+  <div class="header-buttons">
+    <div class="login-button"><button>Fazer login</button></div>
+    <div class="register-button"><button>Registrar-se</button></div>
+  </div>
+</header>
 
-    <main>
-        <span id="title">OS MELHORES</span>
-        <br>
-        <span id="title">CURSOS DO MERCADO!</span>
-        <br>
-        <span id="subtitle">com os melhores preços do país.</span>
-        <br>
-        <br>
+<div class="hero">
+  <div class="badge">Plataforma de cursos online</div>
+  <span id="title">OS MELHORES</span>
+  <span id="title">CURSOS DO MERCADO!</span>
+  <span id="subtitle">com os melhores preços do país.</span>
+  <br><br>
+  <a href="#" class="hero-btn">VER PLANOS</a>
+</div>
 
-        <button>VER PLANOS</button>
-        <br>
-        <br>
-        
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quasi sit, nemo, fuga ad, nisi eveniet fugiat ratione facere animi architecto ex reprehenderit enim harum. Voluptas doloremque excepturi asperiores quam?
-        <br>
-        <br>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam libero dolorum blanditiis omnis deleniti enim, quos doloremque voluptatum quia hic, neque dicta odit sunt nobis molestias accusantium consequatur eligendi autem.
-        Totam doloribus, quo vero dolorem iusto vel accusamus officiis incidunt numquam eveniet provident nesciunt eius esse adipisci facere et earum? Odio nulla exercitationem culpa, veritatis nesciunt aliquam quis sequi maiores!
-        <br>
-        <br>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita tenetur ab soluta voluptatem ipsum est magnam repellat inventore iste officiis labore, dolor omnis laboriosam dicta praesentium necessitatibus ad deserunt voluptas.
-    </main>
+<div class="content-section">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Cursos disponíveis</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">120k</div>
+      <div class="stat-label">Alunos ativos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4.9★</div>
+      <div class="stat-label">Avaliação média</div>
+    </div>
+  </div>
 
-    <footer>
-        <p>Direitos Autorais &copy; 2024, SkillSphere. Todos os Direitos Reservados.</p>
-        <p>Desenvolvido por <a href="https://github.com/UltimateStrength" target="_blank">Marcos (Ulti)</a></p>
-    </footer>
+  <div class="content-block">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quasi sit, nemo, fuga ad, nisi eveniet fugiat ratione facere animi architecto ex reprehenderit enim harum. Voluptas doloremque excepturi asperiores quam?
+  </div>
 
-    <script src="main.js"></script>
+  <div class="content-block">
+    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam libero dolorum blanditiis omnis deleniti enim, quos doloremque voluptatum quia hic, neque dicta odit sunt nobis molestias accusantium consequatur eligendi autem.
+    Totam doloribus, quo vero dolorem iusto vel accusamus officiis incidunt numquam eveniet provident nesciunt eius esse adipisci facere et earum?
+  </div>
+
+  <div class="content-block">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita tenetur ab soluta voluptatem ipsum est magnam repellat inventore iste officiis labore, dolor omnis laboriosam dicta praesentium necessitatibus ad deserunt voluptas.
+  </div>
+</div>
+
+<footer>
+  <p>Direitos Autorais &copy; 2024, SkillSphere. Todos os Direitos Reservados.</p>
+  <p>Desenvolvido por <a href="https://github.com/UltimateStrength" target="_blank">Marcos (Ulti)</a></p>
+</footer>
 
 </body>
 </html>
